@@ -1,0 +1,37 @@
+{
+  using namespace RNROOT;
+  RNROOT::Initialize();
+  RNROOT::gReactionInfo.SetReaction("19Ne","2H","n","20Na","1H","19Ne");
+  RNROOT::gReactionInfo.SetBeamEnergy(86.1);
+  RNROOT::gReactionInfo.SetHiEx(2.65);
+  RNROOT::gReactionInfo.SetEFragmentEst(83);
+  gMainAnalyzer.SetRootOutputFile("Run3544_NoTarget.root");
+  
+  eventinfo::EventAnalyzer eventinfo;
+  ionchamber::IC_Analyzer g;
+  Module_Analyzer e;
+  
+
+
+  RNROOT::gAnalyzer_stack.Add(&c);
+  gAnalyzer_stack.Add(&eventinfo);
+  gAnalyzer_stack.Add(&e);
+  gAnalyzer_stack.Add(&b);
+  // gAnalyzer_stack.Add(&c2);
+  gAnalyzer_stack.Add(&d);
+  gAnalyzer_stack.Add(&f);
+  gAnalyzer_stack.Add(&g);
+
+
+  RNROOT::gMainAnalyzer.InitRootFile("/data1/res048/ROOT/run3544.root");  
+  
+  //LoadVariableFile("config/DetConfig_852014.in");
+  //LoadVariableFile("config/DetConfig_9242014.in");
+  LoadVariableFile("config/DetConfig_9252014.in");
+
+  SetCalibrations();
+  
+  gMainAnalyzer.Loop();
+  
+  gMainAnalyzer.WriteOut();
+}

@@ -1,0 +1,76 @@
+//----------------------------------------------------
+// Just a basic outline of what I understand a script
+// to be comprised of, and what everything does.
+//
+// Author : J. Belarge
+// Date   : 8/14
+//----------------------------------------------------
+
+  1. RNROOT::Initialize()
+	-> This initializes or clears containers tha hold det info.
+	   It adds all of the ADC,TDC, and QDC to the gModule_stack.
+	   It loops over the number of Si detectors, and sets the number of 
+	    back and front channels using the RN_S2Detector class.  Then 
+	    it sets the number of RN_S2Cluster stuff.  
+		-> The RN_S2Detector class contains raw data, calibrations,
+		   and methods to apply calibrations.
+		-> The RN_S2Cluster stores reconstructed data, requiring
+		   matching front and back hits.
+	   It performs similar for triggerbit **Need to know more***
+	   It performs similar for Neut and NaI dets.
+	   Sets the var RN_RootSet to true(1) and returns it.
+
+  2. RNRoot::gReactionIno.*
+	-> Here you set reaction, set beam energy, set the estimated energy
+	   of the fragment, set the hi excitation energy(?), etc.
+  3. gMainAnalyzer.SetRootOutputFile
+	-> Set the name of the root file you will be creating.
+  4. Custom Analyzers
+	-> Here you declare the analyzers you want to use in the script.
+  5. Add Analyzers to the gAnalyzer_stack.
+	-> This adds all of the analyzers you wrote to the stack.  The
+	   gAnalyzer_stack is an object of class "RN_Analyzer_Stack".  
+	   When you add an analyzer to it, it checks to see if the
+	   analyzer inherits from "RN_Analzer".  If it does, then 
+	   it checks to see if fRNStack has been created.  If it has not,
+	   it is created.  fRNStack is a TList.  Once it is confirmed
+	   that fRNStack is created, the analyzer is added to the TList.
+	NOTE --> You do not add the gMainAnalyzer to the gAnalyzer_stack!
+  6. Add root files to the gMainAnalyzer.
+	-> This is done the following way.  
+	    The first root file added (and possibly the only one) is added
+	    using the "InitRootFile" function.
+	   -> All other root files after that are added using the "AddTree"
+	      function.
+  7. Load the variable file that contains params.
+	-> Use the function RNROOT::LoadVariableFile("name/of/file").
+  8. Set Calibrations : Use RNROOT::SetCalibrations()
+  9. Load any gates you want to use.
+  10.Begin the gMainAnalyzer Loop function.
+	-> It is performed with the command: gMainAnalyzer.Loop();
+	-> What happens when you begin this loop:
+		You loop over the total number of entries in the trees that
+		were added.
+		Before the loop in "Loop()" you perform:
+			RNROOT::gAnalyzer_stack.Begin();
+		  -> This performs the "Begin" function for every 
+		     analyzer in the gAnalyzer_stack, one at a time in
+		     F.irst I.n L.ast O.ut order.  
+		Now you go into the loop.  At the start of each trip around 
+		the loop you do Reset(),gAnalyzer_stack.Reset(), and 
+		gParameter_stack.Reset().
+		  -> These Respectively do the following	
+			1. Reset all of the modules stored in TList.
+			2. Im not sure where these things come from.
+		Get the detector entries using the "GetDetectorEntry()"
+		function.  This is a member function of the RN_Analyzer
+		class.  It "InsertHit"'s into dets.
+		Process() -> This always returns true. It is like Begin.
+
+		if(RNROOT::gAnalyzer_stack.Process()).  What this does, is 
+		Performs the member function "Process" for the 
+		RN_Analyzer_Stack class. This means, it checks every 
+		analyzer in the gAnalyzer_stack stack, and if its process
+		is true, you return 1, if it is not true (For example, 
+		if there is some cut that is not met) it returns 0.  
+		****

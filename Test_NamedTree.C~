@@ -1,0 +1,48 @@
+{
+  using namespace RNROOT;
+
+  Initialize();
+  gMainAnalyzer.SetRootOutputFile("TEST3764.root"); 
+
+  // NOTE -> Should add error output message if these are not set.
+  RNROOT::gReactionInfo.SetReaction("19F","2H","n","20Ne","1H","19Ne");
+  RNROOT::gReactionInfo.SetBeamEnergy(86.1);
+  RNROOT::gReactionInfo.SetHiEx(2.65);
+  RNROOT::gReactionInfo.SetEFragmentEst(83);
+
+  NamedTree_Analyzer test1;
+  
+  gAnalyzer_stack.Add(&test1);
+
+  gMainAnalyzer.InitRootFile("/data1/res048/ROOT/run3764.root");
+  /*  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3686.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3687.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3688.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3689.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3690.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3691.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3692.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3693.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3694.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3695.root"); 
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3696.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3697.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3698.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3699.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3700.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3701.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3702.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3703.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3704.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3705.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3706.root");
+  RNROOT::gMainAnalyzer.AddTree("/data1/res048/ROOT/run3707.root");
+  */
+  LoadVariableFile("config/DetConfig_852014.in");
+  SetCalibrations();
+
+  gMainAnalyzer.Loop();
+  gMainAnalyzer.WriteOut();
+
+
+}

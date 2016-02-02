@@ -1,0 +1,48 @@
+{
+  RNROOT::Initialize();
+  
+  // Set Reaction Info:
+  RNROOT::gReactionInfo.SetReaction("19Ne","2H","n","20Na","1H","19Ne");
+  RNROOT::gReactionInfo.SetBeamEnergy(86.1);
+  RNROOT::gReactionInfo.SetHiEx(2.65);
+  RNROOT::gReactionInfo.SetEFragmentEst(83);
+  
+  // Set the output root File:
+  RNROOT::gMainAnalyzer.SetRootOutputFile("TestBeamSpotA_UpTo824.root");
+  
+  // Get Analyzers Here:
+  Neut_20Na::Neut_20Na NeutronStuff;
+  NamedTree_Analyzer NamedTree1;
+  beamspotA::ReconstructBeamSpotA bsA;l
+  
+  bsA.SetDispersionScaleFactor(0.3);
+  NamedTree1.SetDispersionScaleFactor(0.3);
+
+  // Add Analyzers to stack of them here:
+  RNROOT::gAnalyzer_stack.Add(&NeutronStuff);
+  RNROOT::gAnalyzer_stack.Add(&bsA);
+  RNROOT::gAnalyzer_stack.Add(&NamedTree1);
+
+  // Add root files to be Analyzed:
+  RNROOT::gMainAnalyzer.InitRootFile("filterfiles/filterD_824.root");
+  RNROOT::gMainAnalyzer.AddTree("filterfiles/filterD_823.root"); 
+  RNROOT::gMainAnalyzer.AddTree("filterfiles/filterD_822.root"); 
+  RNROOT::gMainAnalyzer.AddTree("filterfiles/filterD_821.root"); 
+  RNROOT::gMainAnalyzer.AddTree("filterfiles/filterD_820.root"); 
+  RNROOT::gMainAnalyzer.AddTree("filterfiles/filterD_818.root");  
+  RNROOT::gMainAnalyzer.AddTree("filterfiles/filterD_817.root"); 
+  RNROOT::gMainAnalyzer.AddTree("filterfiles/filterD_816.root"); 
+  RNROOT::gMainAnalyzer.AddTree("filterfiles/filterD_runs316_19_31.root"); 
+
+
+  // Load Gates:
+  Neut_20Na::LoadPSDGates("cuts/neuts_raw_329.root");
+
+  RNROOT::LoadVariableFile("config/DetConfig_852014.in");
+  RNROOT::SetCalibrations();
+
+  RNROOT::gMainAnalyzer.Loop();
+  RNROOT::gMainAnalyzer.WriteOut();
+
+
+}

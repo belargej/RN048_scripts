@@ -1,0 +1,18 @@
+//----------------------------------------------------
+// Just a basic outline of what I understand a script
+// to be comprised of, and what everything does.
+//
+// Author : J. Belarge
+// Date   : 8/14
+//----------------------------------------------------
+
+  1. RNROOT::Initialize()
+	-> This initializes or clears containers tha hold det info.
+	   It adds all of the ADC,TDC, and QDC to the gModule_stack.
+	   It loops over the number of Si detectors, and sets the number of 
+	    back and front channels using the RN_S2Detector class.  Then 
+	    it sets the number of RN_S2Cluster stuff.  
+		-> The RN_S2Detector class contains raw data, calibrations,
+		   and methods to apply calibrations.
+		-> The RN_S2Cluster stores reconstructed data, requiring
+		   matching front and back hits.
